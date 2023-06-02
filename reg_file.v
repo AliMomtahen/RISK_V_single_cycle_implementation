@@ -7,6 +7,7 @@ module reg_file(A1,A2,A3,RD1,RD2,WE3,WD3,clk,rst);
 	output reg [reg_size-1:0]  RD1,RD2;
 
 	reg [reg_size-1:0] mem [0:regs_num-1] ;	
+		
 	always@(posedge clk)begin
 		if (rst) begin: ClrMem
             integer i;

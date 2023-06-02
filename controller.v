@@ -1,9 +1,13 @@
-module controller(input [31:0] instr,input zero,clk,output reg  reg_write,alu_src,mem_write,pc_src0 ,pc_src1,
+module controller(input [31:0] instr,input zero,clk,rst,output reg  reg_write,alu_src,mem_write,pc_src0 ,pc_src1,
 				output reg [1:0] res_src, imm_src,output reg[2:0] alu_control );
-	always@(clk)begin
+	always@(posedge clk)begin
 		//opcode
+		if(rst)begin
+			{reg_write,alu_src,mem_write,pc_src0 ,pc_src1,res_src,imm_src,alu_control} = 11'b0;
+		end
+		else begin
 		case(instr[6:0])
-			8'b011_0011 :begin //R-Type
+			7'b011_0011 :begin //R-Type
 				case(instr[14:12])
 					//func3
 					3'b000:begin
@@ -34,13 +38,14 @@ module controller(input [31:0] instr,input zero,clk,output reg  reg_write,alu_sr
 
 				endcase
 			end
-			8'b000_0011 :begin //lw
+			7'b000_0011 :begin //lw
 				{reg_write,alu_src} = 2'b1;
-				{pc_src0 ,pc_src1,mem_write} = 2'b0;
-				{alu_control,res_src, imm_src} = 7'b000_01_00;
+				reg_write=1;
+				{pc_src0 ,pc_src1,mem_write} = 3'b0;
+				{alu_control,res_src, imm_src} = 7'b011_01_00;
 				
 			end
-			8'b001_0011 :begin //I-type immediate
+			7'b001_0011 :begin //I-type immediate
 				case(instr[14:12])
 					//func3
 					3'b000:begin // addi
@@ -60,16 +65,16 @@ module controller(input [31:0] instr,input zero,clk,output reg  reg_write,alu_sr
 
 				endcase
 			end
-			8'b110_0111 :begin //jalr
+			7'b110_0111 :begin //jalr
 
 			end
-			8'b010_0011 :begin //sw
+			7'b010_0011 :begin //sw
 
 			end
-			8'b110_1111 :begin //jal
+			7'b110_1111 :begin //jal
 
 			end
-			8'b110_0111 :begin //J-Type
+			7'b110_0111 :begin //J-Type
 				case(instr[14:12])
 					//func3
 					3'b000:begin // beq
@@ -93,12 +98,13 @@ module controller(input [31:0] instr,input zero,clk,output reg  reg_write,alu_sr
 
 				endcase
 			end
-			8'b011_0111 :begin //lui
+			7'b011_0111 :begin //lui
 
 			end
 			default:;
 
 		endcase
+		end
 	end
 
 endmodule

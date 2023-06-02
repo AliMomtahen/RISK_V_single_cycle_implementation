@@ -6,11 +6,8 @@ module inst_mem(adr, dataOut, clk);
 	reg [7:0] inst_adr = 8'b0;
 	assign inst_adr =  adr >> 2;
 	reg [N-1:0] mem [0:49] ;	
-	assign mem[0] = 32'd0;
-	assign mem[5'd3] = 32'd1;
-	assign mem[5'd2] = 32'd2;
-	assign mem[5'd22] = 32'd13;
-	always@(posedge clk)begin
-		dataOut = mem[inst_adr];
-	end
+	assign mem[0] = 32'b000000000000_00000_010_00001_0000011;
+	assign mem[1] = 32'b000000000001_00000_010_00010_0000011;
+	assign mem[2] = 32'b0000000_00001_00010_000_00011_0110011;
+	assign dataOut = mem[inst_adr];
 endmodule
