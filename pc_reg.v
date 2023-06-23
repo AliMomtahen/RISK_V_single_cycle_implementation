@@ -1,5 +1,6 @@
 module pc_reg(input clk,rst,input [31:0] in_pc,output reg [31:0] out_pc);
 	reg [31:0] pc;
+	assign out_pc = pc;
 	always@(posedge clk)begin
 		if(rst)begin
 			pc = 32'b0;

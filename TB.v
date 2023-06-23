@@ -5,8 +5,8 @@ module riscvTB();
 	single_cycle_RISCV riscv(clk ,rst);
 	initial begin
 		#17 rst=~rst;
-		#29 rst=~rst;
-		#1003
+		#25 rst=~rst;
+		#10003
 		$stop;
 
 	end
